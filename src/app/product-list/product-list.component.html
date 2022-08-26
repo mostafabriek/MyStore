@@ -1,0 +1,28 @@
+<div class="product-index">
+  <div *ngFor="let product of products">
+    <div class="product-container">
+      <a routerLink="/product/{{ product.id }}">
+        <img src="{{ product.url }}" />
+      </a>
+      <h2>{{ product.name }}</h2>
+      <p class="price">{{ product.price | currency: "EGP" }}</p>
+      <div class="input-container">
+        <!-- (change)="setQuantity($event)" -->
+        <select name="quantity">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+        <button>add to cart</button>
+        <!-- (click)="addToCart()" -->
+      </div>
+    </div>
+  </div>
+</div>
