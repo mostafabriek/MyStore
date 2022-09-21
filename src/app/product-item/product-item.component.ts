@@ -1,23 +1,46 @@
-import { Component, OnInit } from '@angular/core';
-import { Product } from "../modules/Product";
-import { ProductsService } from '../products.service';
-import { HttpClient } from "@angular/common/http";
-import { ActivatedRoute } from '@angular/router';
+import { Component, Input, OnInit } from '@angular/core';
+import { MessageService } from 'primeng/api';
+import { Product } from '../modules/Product';
+import { CartService } from '../cart.service';
+import { ProductService } from '../products.service';
 
 @Component({
-  selector: 'app-product-item',
+  selector: 'app-product',
   templateUrl: './product-item.component.html',
-  styleUrls: ['./product-item.component.css']
+  styleUrls: ['./product-item.component.css'],
 })
 export class ProductItemComponent implements OnInit {
-  title: string = 'Products';
-  product: Product = new Product();
-  constructor(private route: ActivatedRoute ,private ProductsService:ProductsService ) { }
+  @Input() productItem!: Product;
+  selectedItem = '1';
+  productCount: string[] = ['1', '2', '3', '4', '5'];
 
-  ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      // this.product = this.ProductsService.getProductById(params.id);
-      console.log(params)
-    });
+  constructor(
+    private productService: ProductService,
+    private cartService: CartService
+  ) {}
+
+  ngOnInit(): void {}
+
+  selectedChange(value: any) {
+    this.selectedItem = value;
+  }
+
+  addProductToCart(product: Product): void {
+    const cartProducts: Product[] = this.cartService.getCartProduct();
+    let productInCart = cartProducts.find((ele) => ele.id === product.id);
+    if (productInCart) {
+      productInCart.amount = this.selectedItem;
+      productInCart ? this.productService.addProduct(cartProducts) : null;
+    } else {
+      cartProducts.push(Object.assign(product, { amount: this.selectedItem }));
+      this.productService.addProduct(cartProducts);
+      const message = `${product.name} has been added to your cart.`;
+      alert(message);
+    }
+    this.refresh();
+  }
+
+  refresh(): void {
+    window.location.reload();
   }
 }

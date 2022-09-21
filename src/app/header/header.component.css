@@ -1,21 +1,44 @@
 .header {
-  text-align: center;
-  background: #33B5E5;
+  background-color: #02b3e4;
+  height: 5rem;
+  position: sticky;
   color: #fff;
-  padding: 12px;
 }
-
-a {
-  color: #ffffff;
-  margin: 0 5px;
+.header__title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 500;
+  color: #fff;
 }
-
-.title {
-  font-size: 30px;
+.header__menu {
+  text-align: center;
+  margin-right: 10px;
 }
-
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
+.header a:first-child {
+  text-align: center;
+  padding: 0 10px;
+  margin-right: 5px;
+  color: #fff;
+  text-decoration: none;
+  border-right: 1px solid #fff;
+}
+.header a:nth-child(2) {
+  text-align: center;
+  padding: 10px;
+  color: #fff;
+  text-decoration: none;
+}
+.header a:nth-child(2) i {
+  font-size: 1rem;
+}
+.header a:nth-child(2) #cartAmount {
+  color: white;
+  padding: 1px 7px;
+  border-radius: 50%;
+  background: red;
+  font-size: 13px;
+  position: absolute;
+  font-weight: bold;
+  bottom: 15px;
+  left: 55%;
 }

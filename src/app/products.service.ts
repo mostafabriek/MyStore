@@ -1,24 +1,34 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { catchError, Observable, of } from 'rxjs';
 import { Product } from './modules/Product';
-import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http'
-
+import { tap } from 'rxjs';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class ProductsService {
-  products: Product[] = [];
-  constructor(private http: HttpClient) { }
-  getProducts(): Observable<Product[]>{
-    return this.http.get<Product[]>("../assets/data.json")
+export class ProductService {
+  storage = window.localStorage;
+  apiUrl = 'http://localhost:4200/assets/data.json';
+
+  private handleError<T>(operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+      console.error(error);
+      return of(result as T);
+    };
   }
-  getProductById(id: number): Product {
-    const found: Product | undefined = this.products.find(p => p.id == id);
-    if (found) return found;
-    else return new Product();
+  constructor(private http: HttpClient) {}
+
+  getProduct(): Observable<Product[]> {
+    return this.http.get<Product[]>(this.apiUrl);
+  }
+  addProduct(product: Product[]): void {
+    this.storage.setItem('products', JSON.stringify(product));
   }
 
-  addToCart() {
-
+  getProductByID(id: number): Observable<Product> {
+    const url = `${this.apiUrl}/${id}`;
+    return this.http
+      .get<Product>(url)
+      .pipe(catchError(this.handleError<Product>(`getProduct id=${id}`)));
   }
 }
